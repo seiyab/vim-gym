@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 import { fixupPluginRules } from "@eslint/compat";
 import * as eslintPluginReactHooks from "eslint-plugin-react-hooks";
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
 
 export default [
 	{ files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
@@ -20,4 +21,5 @@ export default [
 		},
 	},
 	{ settings: { react: { version: "detect" } } },
+	eslintPluginUnicorn.configs["flat/recommended"],
 ];
