@@ -1,1 +1,7 @@
-{ "useTabs": true }
+{
+	"useTabs": true,
+	"plugins": [
+		"@trivago/prettier-plugin-sort-imports",
+		"prettier-plugin-sort-members"
+	]
+}

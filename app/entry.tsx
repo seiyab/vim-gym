@@ -1,5 +1,5 @@
-import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import { createRoot } from "react-dom/client";
 
 const container = document.querySelector("app");
 const root = createRoot(container!);
