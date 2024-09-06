@@ -1,3 +1,11 @@
+import "./reset.css";
+import classes from "./style.module.css";
+
 export function App() {
-	return "Hello, React!";
+	return (
+		<div>
+			<div className={classes.header}>Vim Gym</div>
+			<div>Hello, React!</div>
+		</div>
+	);
 }
