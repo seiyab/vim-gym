@@ -20,6 +20,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      vim-wasm:
+        specifier: ^0.0.13
+        version: 0.0.13
     devDependencies:
       '@eslint/compat':
         specifier: ^1.1.1
@@ -1623,6 +1626,9 @@ packages:
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
+
+  vim-wasm@0.0.13:
+    resolution: {integrity: sha512-2EkJ4OfMgvA/bURJeu43wqIQ4tpCJymst++Y4R/AKuQlnrvdI4hTpG2jf0yL5TrLt1ui12leLRghrwPOybyu8w==}
 
   vite@5.4.3:
     resolution: {integrity: sha512-IH+nl64eq9lJjFqU+/yrRnrHPVTlgy42/+IzbOdaFDVlyLgI/wDlf+FCobXLX1cT0X5+7LMyH1mIy2xJdLfo8Q==}
@@ -3413,6 +3419,8 @@ snapshots:
     dependencies:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
+
+  vim-wasm@0.0.13: {}
 
   vite@5.4.3:
     dependencies:
