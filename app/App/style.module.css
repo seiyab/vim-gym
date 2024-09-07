@@ -4,3 +4,13 @@
 	font-size: 2em;
 	padding: 0.5em 5em;
 }
+
+.main {
+	display: flex;
+	min-height: 60vh;
+	width: 100vw;
+}
+
+.main > * {
+	width: 50%;
+}

@@ -6,7 +6,9 @@ export function App() {
 	return (
 		<div>
 			<div className={classes.header}>Vim Gym</div>
-			<Vim />
+			<main className={classes.main}>
+				<Vim />
+			</main>
 		</div>
 	);
 }

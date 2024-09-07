@@ -21,9 +21,18 @@ export function useVim(): UseVimResult {
 				input,
 			});
 			newVim.start();
+			newVim.cmdline("set number");
 			setVim(newVim);
 		}
 	}, [canvas, input]);
+
+	React.useEffect(() => {
+		const resize = () => {
+			vim?.resize(300, 300);
+		};
+		window.addEventListener("resize", resize);
+		return () => window.removeEventListener("resize", resize);
+	}, [vim]);
 
 	return {
 		setCanvas,

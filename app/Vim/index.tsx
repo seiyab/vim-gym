@@ -1,11 +1,21 @@
+import classes from "./style.module.css";
 import { useVim } from "./use-vim";
 
 export function Vim() {
-	const { setCanvas, setInput } = useVim();
+	const { vim, setCanvas, setInput } = useVim();
 	return (
 		<div>
-			<canvas ref={setCanvas}></canvas>
-			<input ref={setInput} autoComplete="off"></input>
+			<input
+				autoFocus
+				className={classes.input}
+				ref={setInput}
+				autoComplete="off"
+			></input>
+			<canvas
+				className={classes.canvas}
+				ref={setCanvas}
+				onFocus={() => vim?.focus()}
+			></canvas>
 		</div>
 	);
 }
