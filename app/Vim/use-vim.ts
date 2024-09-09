@@ -26,14 +26,6 @@ export function useVim(): UseVimResult {
 		}
 	}, [canvas, input]);
 
-	React.useEffect(() => {
-		const resize = () => {
-			vim?.resize(300, 300);
-		};
-		window.addEventListener("resize", resize);
-		return () => window.removeEventListener("resize", resize);
-	}, [vim]);
-
 	return {
 		setCanvas,
 		setInput,

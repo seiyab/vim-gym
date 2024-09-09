@@ -1,10 +1,14 @@
 import classes from "./style.module.css";
 import { useVim } from "./use-vim";
+import * as React from "react";
 
 export function Vim() {
 	const { vim, setCanvas, setInput } = useVim();
+	const { setElement: setContainer } = useResizeObserver((width, height) => {
+		vim?.resize(width, height);
+	});
 	return (
-		<div>
+		<div ref={setContainer} className={classes.container}>
 			<input
 				autoFocus
 				className={classes.input}
@@ -18,4 +22,31 @@ export function Vim() {
 			></canvas>
 		</div>
 	);
+}
+
+type UseResizeObserverResult = {
+	setElement: (element: HTMLElement | null) => void;
+};
+
+function useResizeObserver(
+	effect: (width: number, height: number) => void,
+): UseResizeObserverResult {
+	const [element, setElement] = React.useState<HTMLElement | null>();
+	const observer = React.useRef<ResizeObserver>();
+	React.useEffect(() => {
+		observer.current = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				effect(entry.contentRect.width, entry.contentRect.height);
+			}
+		});
+	}, [effect, element]);
+	React.useEffect(() => {
+		if (element) {
+			observer.current?.observe(element);
+			return () => observer.current?.unobserve(element);
+		}
+	}, [element]);
+	return {
+		setElement,
+	};
 }
