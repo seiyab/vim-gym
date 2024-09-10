@@ -1,9 +1,19 @@
 import classes from "./style.module.css";
 import { useVim } from "./use-vim";
+import testFile from "@app/data/a.jsx.text?url";
 import * as React from "react";
 
 export function Vim() {
-	const { vim, setCanvas, setInput } = useVim();
+	const { vim, setCanvas, setInput } = useVim(
+		React.useMemo(
+			() => ({
+				fetchFiles: {
+					"a.jsx": testFile,
+				},
+			}),
+			[],
+		),
+	);
 	const { setElement: setContainer } = useResizeObserver((width, height) => {
 		vim?.resize(width, height);
 	});

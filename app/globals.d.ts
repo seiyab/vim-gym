@@ -3,6 +3,6 @@ declare module "*.module.css" {
 	export default classes;
 }
 
-declare module "vim-wasm/vim.js?url" {
+declare module "*?url" {
 	export default string;
 }
