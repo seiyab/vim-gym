@@ -1,16 +1,36 @@
+.app {
+	--content-max-width: 1000px;
+	width: 100vw;
+}
+
+.app > * {
+	width: 100%;
+}
+
 .header {
 	background-color: #069;
 	color: white;
 	font-size: 2em;
-	padding: 0.5em 5em;
+	display: flex;
+	justify-content: center;
+}
+
+.header > div {
+	max-width: var(--content-max-width);
 }
 
 .main {
 	display: flex;
+	justify-content: center;
 	min-height: 60vh;
-	width: 100vw;
 }
 
-.main > * {
-	width: 50%;
+.main > div {
+	display: flex;
+	justify-content: space-between;
+	max-width: var(--content-max-width);
+}
+
+.main > div > div {
+	width: 45%;
 }

@@ -4,10 +4,17 @@ import classes from "./style.module.css";
 
 export function App() {
 	return (
-		<div>
-			<div className={classes.header}>Vim Gym</div>
+		<div className={classes.app}>
+			<div className={classes.header}>
+				<div>Vim Gym</div>
+			</div>
 			<main className={classes.main}>
-				<Vim />
+				<div>
+					<div>
+						<Vim />
+					</div>
+					<div />
+				</div>
 			</main>
 		</div>
 	);
