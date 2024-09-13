@@ -6,6 +6,10 @@ import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
+// FIXME
+/* eslint-disable @typescript-eslint/no-unsafe-assignment  */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access  */
+
 export default [
 	{ files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
 	{ languageOptions: { globals: globals.browser } },
@@ -14,8 +18,11 @@ export default [
 	{
 		languageOptions: {
 			parserOptions: {
-				projectService: true,
-				tsconfigRootDir: import.meta.dir,
+				projectService: {
+					allowDefaultProject: ["*.mjs"],
+					defaultProject: "tsconfig.json",
+				},
+				tsconfigRootDir: import.meta.dirname,
 			},
 		},
 	},

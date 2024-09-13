@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		/* Visit https://aka.ms/tsconfig to read more about this file */
 		"target": "es2016",
-		// "lib": [],
+		"lib": ["es2022", "dom"],
 		"jsx": "react-jsx" /* Specify what JSX code is generated. */,
 		"module": "NodeNext" /* Specify what module code is generated. */,
 		"noEmit": true,
