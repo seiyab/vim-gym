@@ -10,7 +10,15 @@ export default [
 	{ files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
 	{ languageOptions: { globals: globals.browser } },
 	pluginJs.configs.recommended,
-	...tseslint.configs.recommended,
+	...tseslint.configs.recommendedTypeChecked,
+	{
+		languageOptions: {
+			parserOptions: {
+				projectService: true,
+				tsconfigRootDir: import.meta.dir,
+			},
+		},
+	},
 	pluginReact.configs.flat.recommended,
 	pluginReact.configs.flat["jsx-runtime"],
 	{

@@ -1,3 +1,4 @@
+import { formatCodeArrayBuffer } from "@app/format";
 import * as React from "react";
 import { VimWasm } from "vim-wasm";
 import worker from "vim-wasm/vim.js?url";
@@ -20,7 +21,7 @@ export function useVim(options: UseVimOptions): UseVimResult {
 	React.useEffect(() => {
 		if (canvas !== undefined && input !== undefined && vim === undefined) {
 			const newVim = new VimWasm({
-				workerScriptPath: worker,
+				workerScriptPath: worker as string,
 				canvas,
 				input,
 			});
@@ -28,8 +29,19 @@ export function useVim(options: UseVimOptions): UseVimResult {
 				fetchFiles: options.fetchFiles,
 				cmdArgs: [Object.keys(options.fetchFiles)[0]],
 			});
-			newVim.cmdline("set number");
-			setVim(newVim);
+			void (async () => {
+				await newVim.cmdline("set number");
+				await newVim.cmdline("autocmd BufWritePost * :export");
+				newVim.onFileExport = (fullpath, contents) => {
+					void (async () => {
+						await newVim.dropFile(
+							fullpath,
+							await formatCodeArrayBuffer(contents),
+						);
+					})();
+				};
+				setVim(newVim);
+			})();
 		}
 	}, [canvas, input, options.fetchFiles, vim]);
 
