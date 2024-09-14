@@ -4,5 +4,6 @@ declare module "*.module.css" {
 }
 
 declare module "*?url" {
-	export default string;
+	const url: string;
+	export default url;
 }

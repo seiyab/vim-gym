@@ -4,7 +4,8 @@ import { VimWasm } from "vim-wasm";
 import worker from "vim-wasm/vim.js?url";
 
 type UseVimOptions = {
-	fetchFiles: Record<string, string>;
+	files: Record<string, string>;
+	onSave?: (fileName: string, fileContent: ArrayBuffer) => void;
 };
 
 type UseVimResult = {
@@ -14,25 +15,29 @@ type UseVimResult = {
 };
 
 export function useVim(options: UseVimOptions): UseVimResult {
+	const [files] = React.useState(options.files);
 	const [vim, setVim] = React.useState<VimWasm>();
 	const [canvas, setCanvas] = React.useState<HTMLCanvasElement>();
 	const [input, setInput] = React.useState<HTMLInputElement>();
+	const onSaveRef = React.useRef(options.onSave);
+	onSaveRef.current = options.onSave;
 
 	React.useEffect(() => {
 		if (canvas !== undefined && input !== undefined && vim === undefined) {
 			const newVim = new VimWasm({
-				workerScriptPath: worker as string,
+				workerScriptPath: worker,
 				canvas,
 				input,
 			});
 			newVim.start({
-				fetchFiles: options.fetchFiles,
-				cmdArgs: [Object.keys(options.fetchFiles)[0]],
+				files,
+				cmdArgs: [Object.keys(files)[0]],
 			});
 			void (async () => {
 				await newVim.cmdline("set number");
 				await newVim.cmdline("autocmd BufWritePost * :export");
 				newVim.onFileExport = (fullpath, contents) => {
+					onSaveRef.current?.(fullpath, contents);
 					void (async () => {
 						await newVim.dropFile(
 							fullpath,
@@ -43,7 +48,7 @@ export function useVim(options: UseVimOptions): UseVimResult {
 				setVim(newVim);
 			})();
 		}
-	}, [canvas, input, options.fetchFiles, vim]);
+	}, [canvas, input, files, vim]);
 
 	return {
 		setCanvas,

@@ -1,0 +1,7 @@
+.workspace {
+	display: flex;
+}
+
+.workspace > * {
+	width: 50%;
+}

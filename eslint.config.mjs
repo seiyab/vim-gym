@@ -1,8 +1,9 @@
+import { languageOptions } from "./config/eslint/language-options.mjs";
+import { myUnicorn } from "./config/eslint/my-unicorn.mjs";
 import { fixupPluginRules } from "@eslint/compat";
 import pluginJs from "@eslint/js";
 import pluginReact from "eslint-plugin-react";
 import * as eslintPluginReactHooks from "eslint-plugin-react-hooks";
-import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -12,20 +13,11 @@ import tseslint from "typescript-eslint";
 
 export default [
 	{ files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
+	{ ignores: ["app/data/"] },
 	{ languageOptions: { globals: globals.browser } },
 	pluginJs.configs.recommended,
 	...tseslint.configs.recommendedTypeChecked,
-	{
-		languageOptions: {
-			parserOptions: {
-				projectService: {
-					allowDefaultProject: ["*.mjs"],
-					defaultProject: "tsconfig.json",
-				},
-				tsconfigRootDir: import.meta.dirname,
-			},
-		},
-	},
+	languageOptions,
 	pluginReact.configs.flat.recommended,
 	pluginReact.configs.flat["jsx-runtime"],
 	{
@@ -36,5 +28,5 @@ export default [
 		},
 	},
 	{ settings: { react: { version: "detect" } } },
-	eslintPluginUnicorn.configs["flat/recommended"],
+	...myUnicorn,
 ];

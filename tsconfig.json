@@ -13,5 +13,6 @@
 		"paths": {
 			"@app/*": ["./app/*"]
 		}
-	}
+	},
+	"exclude": ["app/data/"]
 }
