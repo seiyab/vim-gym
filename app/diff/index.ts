@@ -1,6 +1,6 @@
 type DiffLine = {
-	left?: number;
-	right?: number;
+	left?: string;
+	right?: string;
 };
 
 export function diff(left: string[], right: string[]): DiffLine[] {
@@ -65,11 +65,11 @@ function reconstruct(
 		const cell = table[l][r];
 		const [previousL, previousR] = cell.back;
 		if (previousL === l - 1 && previousR === r - 1) {
-			diff.push({ left: l, right: r });
+			diff.push({ left: left[l], right: right[r] });
 		} else if (previousL === l) {
-			diff.push({ right: r });
+			diff.push({ right: right[r] });
 		} else if (previousR === r) {
-			diff.push({ left: l });
+			diff.push({ left: left[l] });
 		}
 		[l, r] = cell.back;
 	}
