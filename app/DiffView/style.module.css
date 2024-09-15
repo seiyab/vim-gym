@@ -1,4 +1,9 @@
 .container {
+	font-family:
+		monaco,
+		Consolas,
+		Lucida Console,
+		monospace;
 	display: block;
 }
 
