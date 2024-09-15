@@ -20,7 +20,7 @@ export function DiffView({ left, right }: Props) {
 						[classes.red]: line.left && !line.right,
 					})}
 				>
-					{line.left ?? line.right}
+					<pre>{line.left ?? line.right}</pre>
 				</div>
 			))}
 		</div>
