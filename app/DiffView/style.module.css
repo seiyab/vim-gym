@@ -9,6 +9,7 @@
 
 .row {
 	display: flex;
+	min-height: 1em;
 }
 
 .red {

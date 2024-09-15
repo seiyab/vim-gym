@@ -10,6 +10,7 @@ import * as React from "react";
 function Workspace(): React.ReactNode {
 	const before = useAssetText(bf);
 	const after = useAssetText(af);
+	const [work, setWork] = React.useState<string>();
 	if (!before.isSuccess || !after.isSuccess) {
 		return;
 	}
@@ -18,9 +19,14 @@ function Workspace(): React.ReactNode {
 			<Vim
 				fileName="before.ts"
 				fileContent={before.data}
-				onSave={() => void 0}
+				onSave={(_, content) => {
+					const decoded = new TextDecoder().decode(content);
+					void formatCode(decoded).then((formatted) => {
+						setWork(formatted);
+					});
+				}}
 			/>
-			<DiffView left={before.data} right={after.data} />
+			<DiffView left={work ?? before.data} right={after.data} />
 		</div>
 	);
 }
