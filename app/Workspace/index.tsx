@@ -1,15 +1,19 @@
 import classes from "./style.module.css";
 import { DiffView } from "@app/DiffView";
 import { Vim } from "@app/Vim";
-import af from "@app/data/that-19c2860/after.ts.txt?url";
-import bf from "@app/data/that-19c2860/before.ts.txt?url";
 import { formatCode } from "@app/format";
 import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 
-function Workspace(): React.ReactNode {
-	const before = useAssetText(bf);
-	const after = useAssetText(af);
+type Props = {
+	beforeURL: string;
+	afterURL: string;
+	onDone: () => void;
+};
+
+function Workspace({ beforeURL, afterURL, onDone }: Props): React.ReactNode {
+	const before = useAssetText(beforeURL);
+	const after = useAssetText(afterURL);
 	const [work, setWork] = React.useState<string>();
 	if (!before.isSuccess || !after.isSuccess) {
 		return;
@@ -23,6 +27,9 @@ function Workspace(): React.ReactNode {
 					const decoded = new TextDecoder().decode(content);
 					void formatCode(decoded).then((formatted) => {
 						setWork(formatted);
+						if (formatted === after.data) {
+							onDone();
+						}
 					});
 				}}
 			/>
@@ -42,4 +49,4 @@ function useAssetText(url: string) {
 	});
 }
 
-export default Workspace satisfies React.FC;
+export default Workspace satisfies React.FC<Props>;
