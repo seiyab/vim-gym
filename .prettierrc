@@ -3,5 +3,6 @@
 	"plugins": [
 		"@trivago/prettier-plugin-sort-imports",
 		"prettier-plugin-sort-members"
-	]
+	],
+	"keepGettersAndSettersTogether": true
 }

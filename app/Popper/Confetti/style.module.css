@@ -1,0 +1,6 @@
+.confetti {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	transform: translateX(-50%) translateY(-50%);
+}

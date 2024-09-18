@@ -1,3 +1,4 @@
+import { Popper } from "@app/Popper";
 import Workspace from "@app/Workspace";
 import { tasks } from "@app/tasks";
 import * as React from "react";
@@ -7,11 +8,13 @@ export function Game() {
 	const task = tasks[taskIndex];
 
 	return (
-		<Workspace
-			key={taskIndex}
-			beforeURL={task.before}
-			afterURL={task.after}
-			onDone={() => setTaskIndex((p) => (p + 1) % tasks.length)}
-		/>
+		<Popper>
+			<Workspace
+				key={taskIndex}
+				beforeURL={task.before}
+				afterURL={task.after}
+				onDone={() => setTaskIndex((p) => (p + 1) % tasks.length)}
+			/>
+		</Popper>
 	);
 }
