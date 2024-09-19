@@ -3,16 +3,19 @@ import classes from "./style.module.css";
 import * as React from "react";
 
 type Props = {
+	showConfetti: boolean;
 	children: React.ReactNode;
 };
 
-export function Popper({ children }: Props): React.ReactNode {
-	const [show, setShow] = React.useState(false);
+export function ConfettiScreen({
+	children,
+	showConfetti,
+}: Props): React.ReactNode {
 	return (
-		<div className={classes.container} onClick={() => setShow(true)}>
+		<div className={classes.container}>
 			{children}
-			{show && (
-				<div className={classes.popperScreen}>
+			{showConfetti && (
+				<div className={classes.screen}>
 					{Array.from({ length: 30 }).map((_, index) => (
 						<Confetti key={index} position="left" />
 					))}
@@ -25,4 +28,4 @@ export function Popper({ children }: Props): React.ReactNode {
 	);
 }
 
-Popper satisfies React.FC<Props>;
+ConfettiScreen satisfies React.FC<Props>;

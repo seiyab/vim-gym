@@ -1,4 +1,5 @@
 import classes from "./style.module.css";
+import { ConfettiScreen } from "@app/ConfettiScreen";
 import { DiffView } from "@app/DiffView";
 import { Vim } from "@app/Vim";
 import { formatCode } from "@app/format";
@@ -15,26 +16,30 @@ function Workspace({ beforeURL, afterURL, onDone }: Props): React.ReactNode {
 	const before = useAssetText(beforeURL);
 	const after = useAssetText(afterURL);
 	const [work, setWork] = React.useState<string>();
+	const [done, setDone] = React.useState(false);
 	if (!before.isSuccess || !after.isSuccess) {
 		return;
 	}
 	return (
-		<div className={classes.workspace}>
-			<Vim
-				fileName="before.ts"
-				fileContent={before.data}
-				onSave={(_, content) => {
-					const decoded = new TextDecoder().decode(content);
-					void formatCode(decoded).then((formatted) => {
-						setWork(formatted);
-						if (formatted === after.data) {
-							onDone();
-						}
-					});
-				}}
-			/>
-			<DiffView left={work ?? before.data} right={after.data} />
-		</div>
+		<ConfettiScreen showConfetti={done}>
+			<div className={classes.workspace}>
+				<Vim
+					fileName="before.ts"
+					fileContent={before.data}
+					onSave={(_, content) => {
+						const decoded = new TextDecoder().decode(content);
+						void formatCode(decoded).then((formatted) => {
+							setWork(formatted);
+							if (formatted === after.data) {
+								setDone(true);
+								onDone();
+							}
+						});
+					}}
+				/>
+				<DiffView left={work ?? before.data} right={after.data} />
+			</div>
+		</ConfettiScreen>
 	);
 }
 
