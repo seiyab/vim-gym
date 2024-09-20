@@ -15,7 +15,7 @@ export function Game() {
 			onDone={() => {
 				setTimeout(() => {
 					setTaskIndex((p) => (p + 1) % tasks.length);
-				}, durationMs * 0.8);
+				}, durationMs * 0.4);
 			}}
 		/>
 	);

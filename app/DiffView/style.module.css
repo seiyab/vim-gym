@@ -19,3 +19,7 @@
 .green {
 	background-color: #ccffcc;
 }
+
+.pre {
+	white-space: pre-wrap;
+}

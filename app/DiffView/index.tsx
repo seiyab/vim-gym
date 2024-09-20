@@ -21,7 +21,7 @@ export function DiffView({ left, right }: Props) {
 						[classes.red]: line.left !== undefined && line.right === undefined,
 					})}
 				>
-					<pre>{line.left ?? line.right}</pre>
+					<pre className={classes.pre}>{line.left ?? line.right}</pre>
 				</div>
 			))}
 		</div>
