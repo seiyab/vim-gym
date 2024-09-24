@@ -16,12 +16,11 @@ export function DiffView({ left, right }: Props) {
 				<div
 					key={index}
 					className={classNames(classes.row, {
-						[classes.green]:
-							line.right !== undefined && line.left === undefined,
-						[classes.red]: line.left !== undefined && line.right === undefined,
+						[classes.green]: line.type === "right",
+						[classes.red]: line.type === "left",
 					})}
 				>
-					<pre className={classes.pre}>{line.left ?? line.right}</pre>
+					<pre className={classes.pre}>{line.content}</pre>
 				</div>
 			))}
 		</div>

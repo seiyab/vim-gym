@@ -1,9 +1,9 @@
-type DiffLine = {
-	left?: string;
-	right?: string;
+type DiffElement = {
+	type: "same" | "left" | "right";
+	content: string;
 };
 
-export function diff(left: string[], right: string[]): DiffLine[] {
+export function diff(left: string[], right: string[]): DiffElement[] {
 	const table = dp(left, right);
 	return reconstruct(table, left, right);
 }
@@ -58,18 +58,18 @@ function reconstruct(
 	table: DPCell[][],
 	left: string[],
 	right: string[],
-): DiffLine[] {
-	const diff: DiffLine[] = [];
+): DiffElement[] {
+	const diff: DiffElement[] = [];
 	let [l, r] = [left.length - 1, right.length - 1];
 	while (l >= 0 && r >= 0) {
 		const cell = table[l][r];
 		const [previousL, previousR] = cell.back;
 		if (previousL === l - 1 && previousR === r - 1) {
-			diff.push({ left: left[l], right: right[r] });
+			diff.push({ type: "same", content: left[l] });
 		} else if (previousL === l) {
-			diff.push({ right: right[r] });
+			diff.push({ type: "right", content: right[r] });
 		} else if (previousR === r) {
-			diff.push({ left: left[l] });
+			diff.push({ type: "left", content: left[l] });
 		}
 		[l, r] = cell.back;
 	}

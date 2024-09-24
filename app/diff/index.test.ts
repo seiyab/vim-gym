@@ -3,29 +3,29 @@ import { expect, test } from "vitest";
 
 test("diff", () => {
 	expect(diff(["a", "b", "c"], ["a", "b", "d"])).toEqual([
-		{ left: "a", right: "a" },
-		{ left: "b", right: "b" },
-		{ left: "c" },
-		{ right: "d" },
+		{ type: "same", content: "a" },
+		{ type: "same", content: "b" },
+		{ type: "left", content: "c" },
+		{ type: "right", content: "d" },
 	]);
 
 	expect(diff(["a", "b", "c"], ["a", "c"])).toEqual([
-		{ left: "a", right: "a" },
-		{ left: "b" },
-		{ left: "c", right: "c" },
+		{ type: "same", content: "a" },
+		{ type: "left", content: "b" },
+		{ type: "same", content: "c" },
 	]);
 
 	expect(diff(["a", "c", "b", "c"], ["a", "b", "c"])).toEqual([
-		{ left: "a", right: "a" },
-		{ left: "c" },
-		{ left: "b", right: "b" },
-		{ left: "c", right: "c" },
+		{ type: "same", content: "a" },
+		{ type: "left", content: "c" },
+		{ type: "same", content: "b" },
+		{ type: "same", content: "c" },
 	]);
 
 	expect(diff(["a", "b", "c"], ["a", "c", "b", "c"])).toEqual([
-		{ left: "a", right: "a" },
-		{ right: "c" },
-		{ left: "b", right: "b" },
-		{ left: "c", right: "c" },
+		{ type: "same", content: "a" },
+		{ type: "right", content: "c" },
+		{ type: "same", content: "b" },
+		{ type: "same", content: "c" },
 	]);
 });
