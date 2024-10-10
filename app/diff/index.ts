@@ -5,39 +5,69 @@ type DiffElement = {
 
 export function diff(left: string[], right: string[]): DiffElement[] {
 	const table = dp(left, right);
-	return reconstruct(table, left, right);
+	return reconstruct(table);
 }
 
 type DPCell = {
-	back: [number, number];
+	pos: Position;
+	value: string;
+	back: Position;
 	score: number;
 };
 
-const zeroCell: DPCell = { back: [-1, -1], score: 0 };
+type Position = [number, number];
 
 function dp(left: string[], right: string[]): DPCell[][] {
-	const table: DPCell[][] = [];
-	for (const [lIndex, l] of left.entries()) {
-		const row: DPCell[] = [];
-		for (const [rIndex, r] of right.entries()) {
-			const previous1 = row.at(-1) ?? zeroCell;
+	const table: DPCell[][] = [
+		[{ pos: [0, 0], back: [-1, -1], value: "", score: 0 }],
+	];
+	for (const r of right.values()) {
+		const previous = table[0].at(-1)!;
+		const pos: Position = [0, table[0].length];
+		table[0].push({
+			pos,
+			value: r,
+			back: previous.pos,
+			score: previous.score,
+		});
+	}
+	for (const l of left) {
+		const row: DPCell[] = [
+			{
+				pos: [table.length, 0],
+				value: l,
+				back: [table.length - 1, 0],
+				score: table.at(-1)![0].score,
+			},
+		];
+		for (const r of right) {
+			const pos: Position = [table.length, row.length];
+			const previous1 = row.at(-1)!;
 			const candidate1: DPCell = {
-				back: [lIndex, rIndex - 1],
+				pos,
+				value: r,
+				back: previous1.pos,
 				score: previous1.score,
 			};
-			const previous2 = table.at(-1)?.at(rIndex) ?? zeroCell;
+			const previous2 = table.at(-1)![pos[1]];
 			const candidate2: DPCell = {
-				back: [lIndex - 1, rIndex],
+				pos,
+				value: l,
+				back: previous2.pos,
 				score: previous2.score,
 			};
-			const previous3 = table.at(-1)?.at(rIndex - 1) ?? zeroCell;
+			const previous3 = table.at(-1)![pos[1] - 1];
 			const candidate3: DPCell =
 				l === r
 					? {
-							back: [lIndex - 1, rIndex - 1],
+							pos,
+							value: l,
+							back: previous3.pos,
 							score: previous3.score + 1,
 						}
 					: {
+							pos,
+							value: "",
 							back: [-1, -1],
 							score: -1,
 						};
@@ -54,22 +84,18 @@ function dp(left: string[], right: string[]): DPCell[][] {
 	return table;
 }
 
-function reconstruct(
-	table: DPCell[][],
-	left: string[],
-	right: string[],
-): DiffElement[] {
+function reconstruct(table: DPCell[][]): DiffElement[] {
 	const diff: DiffElement[] = [];
-	let [l, r] = [left.length - 1, right.length - 1];
-	while (l >= 0 && r >= 0) {
+	let [l, r] = [table.length - 1, table[0].length - 1];
+	while (l > 0 || r > 0) {
 		const cell = table[l][r];
 		const [previousL, previousR] = cell.back;
 		if (previousL === l - 1 && previousR === r - 1) {
-			diff.push({ type: "same", content: left[l] });
+			diff.push({ type: "same", content: cell.value });
 		} else if (previousL === l) {
-			diff.push({ type: "right", content: right[r] });
+			diff.push({ type: "right", content: cell.value });
 		} else if (previousR === r) {
-			diff.push({ type: "left", content: left[l] });
+			diff.push({ type: "left", content: cell.value });
 		}
 		[l, r] = cell.back;
 	}

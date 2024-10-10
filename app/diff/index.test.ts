@@ -28,4 +28,29 @@ test("diff", () => {
 		{ type: "same", content: "b" },
 		{ type: "same", content: "c" },
 	]);
+
+	expect(diff(["a"], ["b"])).toEqual([
+		{ type: "left", content: "a" },
+		{ type: "right", content: "b" },
+	]);
+
+	expect(diff(["a", "b", "b", "c"], ["b"])).toEqual([
+		{ type: "left", content: "a" },
+		{ type: "same", content: "b" },
+		{ type: "left", content: "b" },
+		{ type: "left", content: "c" },
+	]);
+
+	expect(diff(["b"], ["a", "b", "b", "c"])).toEqual([
+		{ type: "right", content: "a" },
+		{ type: "same", content: "b" },
+		{ type: "right", content: "b" },
+		{ type: "right", content: "c" },
+	]);
+
+	expect(diff([], [])).toEqual([]);
+
+	expect(diff(["a"], [])).toEqual([{ type: "left", content: "a" }]);
+
+	expect(diff([], ["a"])).toEqual([{ type: "right", content: "a" }]);
 });
