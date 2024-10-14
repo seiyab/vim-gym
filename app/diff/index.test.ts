@@ -1,4 +1,6 @@
 import { diff } from ".";
+import { richDiff } from "./rich-diff";
+import { code } from "@app/utils/strings/code";
 import { expect, test } from "vitest";
 
 test("diff", () => {
@@ -53,4 +55,99 @@ test("diff", () => {
 	expect(diff(["a"], [])).toEqual([{ type: "left", content: "a" }]);
 
 	expect(diff([], ["a"])).toEqual([{ type: "right", content: "a" }]);
+});
+
+test("richDiff", () => {
+	expect(
+		richDiff(
+			code`
+			const foo = "abcdef";
+			// foobar
+			let bar = "qwerty";
+			`.split("\n"),
+			code`
+			const baz = "abcdef";
+			// foobar
+			const bar = "asdf";
+			`.split("\n"),
+		),
+	).toEqual([
+		{
+			type: "left",
+			content: [
+				{ type: "shared", content: "const " },
+				{ type: "owned", content: "foo" },
+				{ type: "shared", content: ' = "abcdef";' },
+			],
+		},
+		{
+			type: "right",
+			content: [
+				{ type: "shared", content: "const " },
+				{ type: "owned", content: "baz" },
+				{ type: "shared", content: ' = "abcdef";' },
+			],
+		},
+		{
+			type: "same",
+			content: [{ type: "shared", content: "// foobar" }],
+		},
+		{
+			type: "left",
+			content: [
+				{ type: "owned", content: "le" },
+				{ type: "shared", content: 't bar = "' },
+				{ type: "owned", content: "qwerty" },
+				{ type: "shared", content: '";' },
+			],
+		},
+		{
+			type: "right",
+			content: [
+				{ type: "owned", content: "cons" },
+				{ type: "shared", content: 't bar = "' },
+				{ type: "owned", content: "asdf" },
+				{ type: "shared", content: '";' },
+			],
+		},
+	] satisfies ReturnType<typeof richDiff>);
+
+	expect(
+		richDiff(
+			code`
+			abcde
+			fghij
+			klmno
+			pqrst
+			`.split("\n"),
+			code`
+			i
+			`.split("\n"),
+		),
+	).toEqual([
+		{
+			type: "left",
+			content: [{ type: "owned", content: "abcde" }],
+		},
+		{
+			type: "left",
+			content: [
+				{ type: "owned", content: "fgh" },
+				{ type: "shared", content: "i" },
+				{ type: "owned", content: "j" },
+			],
+		},
+		{
+			type: "right",
+			content: [{ type: "shared", content: "i" }],
+		},
+		{
+			type: "left",
+			content: [{ type: "owned", content: "klmno" }],
+		},
+		{
+			type: "left",
+			content: [{ type: "owned", content: "pqrst" }],
+		},
+	]);
 });
