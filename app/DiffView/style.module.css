@@ -13,11 +13,21 @@
 }
 
 .red {
-	background-color: #ffcccc;
+	background-color: #ffeeee;
+}
+
+.red em {
+	position: relative;
+	background-color: #ffaaaa;
 }
 
 .green {
-	background-color: #ccffcc;
+	background-color: #eeffee;
+}
+
+.green em {
+	position: relative;
+	background-color: #aaffaa;
 }
 
 .pre {

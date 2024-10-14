@@ -1,7 +1,8 @@
 import classes from "./style.module.css";
-import { diff } from "@app/diff";
+import { richDiff } from "@app/diff/rich-diff";
 import classNames from "classnames";
 import type { FC } from "react";
+import * as React from "react";
 
 type Props = {
 	left: string;
@@ -9,7 +10,7 @@ type Props = {
 };
 
 export function DiffView({ left, right }: Props) {
-	const d = diff(left.split("\n"), right.split("\n"));
+	const d = richDiff(left.split("\n"), right.split("\n"));
 	return (
 		<div className={classes.container}>
 			{d.map((line, index) => (
@@ -20,7 +21,15 @@ export function DiffView({ left, right }: Props) {
 						[classes.red]: line.type === "left",
 					})}
 				>
-					<pre className={classes.pre}>{line.content}</pre>
+					<pre className={classes.pre}>
+						{line.content.map((l, w) =>
+							React.createElement(
+								l.type === "owned" ? "em" : "span",
+								{ key: w },
+								l.content,
+							),
+						)}
+					</pre>
 				</div>
 			))}
 		</div>
