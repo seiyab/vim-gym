@@ -1,7 +1,0 @@
-export type That<T> = {
-	"~>": Call<T>;
-	"|>": Call$<T>;
-	"?~>": MaybeCallThis<T>;
-	"?|>": MaybePipe<T>;
-	";": T;
-};

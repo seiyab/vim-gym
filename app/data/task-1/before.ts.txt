@@ -1,0 +1,5 @@
+type Cell<T> = {
+    pos: [number, number];
+    back: [number, number];
+    value: T;
+}

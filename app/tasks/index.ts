@@ -1,22 +1,22 @@
-import digdag1506After from "@app/data/digdag-1506/after.ts.txt?url";
-import digdag1506Before from "@app/data/digdag-1506/before.ts.txt?url";
-import prettier14587After from "@app/data/prettier-14587/after.js.txt?url";
-import prettier14587Before from "@app/data/prettier-14587/before.js.txt?url";
-import that19c2860After from "@app/data/that-19c2860/after.ts.txt?url";
-import that19c2860Before from "@app/data/that-19c2860/before.ts.txt?url";
+import task1After from "@app/data/task-1/after.ts.txt?url";
+import task1Before from "@app/data/task-1/before.ts.txt?url";
+import task2After from "@app/data/task-2/after.ts.txt?url";
+import task2Before from "@app/data/task-2/before.ts.txt?url";
+import task3After from "@app/data/task-3/after.ts.txt?url";
+import task3Before from "@app/data/task-3/before.ts.txt?url";
 
 export const tasks: Task[] = [
 	{
-		before: digdag1506Before,
-		after: digdag1506After,
+		before: task1Before,
+		after: task1After,
 	},
 	{
-		before: prettier14587Before,
-		after: prettier14587After,
+		before: task2Before,
+		after: task2After,
 	},
 	{
-		before: that19c2860Before,
-		after: that19c2860After,
+		before: task3Before,
+		after: task3After,
 	},
 ];
 
