@@ -9,18 +9,22 @@ export const tasks: Task[] = [
   {
     before: url0,
     after: url1,
+    parser: "typescript",
   },
   {
     before: url2,
     after: url3,
+    parser: "typescript",
   },
   {
     before: url4,
     after: url5,
+    parser: "typescript",
   },
 ];
 
 type Task = {
   before: string;
   after: string;
+  parser: string;
 };

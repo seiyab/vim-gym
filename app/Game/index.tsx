@@ -12,6 +12,7 @@ export function Game() {
 			key={taskIndex}
 			beforeURL={task.before}
 			afterURL={task.after}
+			parser={task.parser}
 			onDone={() => {
 				setTimeout(() => {
 					setTaskIndex((p) => (p + 1) % tasks.length);

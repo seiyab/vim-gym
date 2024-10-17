@@ -9,12 +9,18 @@ import * as React from "react";
 type Props = {
 	beforeURL: string;
 	afterURL: string;
+	parser: string;
 	onDone: () => void;
 };
 
-function Workspace({ beforeURL, afterURL, onDone }: Props): React.ReactNode {
-	const before = useAssetText(beforeURL);
-	const after = useAssetText(afterURL);
+function Workspace({
+	beforeURL,
+	afterURL,
+	parser,
+	onDone,
+}: Props): React.ReactNode {
+	const before = useAssetText(beforeURL, parser);
+	const after = useAssetText(afterURL, parser);
 	const [work, setWork] = React.useState<string>();
 	const [done, setDone] = React.useState(false);
 	if (!before.isSuccess || !after.isSuccess) {
@@ -28,7 +34,7 @@ function Workspace({ beforeURL, afterURL, onDone }: Props): React.ReactNode {
 					fileContent={before.data}
 					onSave={(_, content) => {
 						const decoded = new TextDecoder().decode(content);
-						void formatCode(decoded).then((formatted) => {
+						void formatCode(decoded, parser).then((formatted) => {
 							setWork(formatted);
 							if (formatted === after.data) {
 								setDone(true);
@@ -43,12 +49,12 @@ function Workspace({ beforeURL, afterURL, onDone }: Props): React.ReactNode {
 	);
 }
 
-function useAssetText(url: string) {
+function useAssetText(url: string, parser: string) {
 	return useQuery({
 		queryKey: [url],
 		queryFn: async () => {
 			const response = await fetch(url);
-			return await formatCode(await response.text());
+			return await formatCode(await response.text(), parser);
 		},
 		staleTime: Number.POSITIVE_INFINITY,
 	});

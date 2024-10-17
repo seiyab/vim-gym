@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import { match, otherwise } from "../app/utils/match.ts";
 import * as fs from "node:fs";
 import path from "node:path";
 import * as prettier from "prettier";
@@ -28,7 +31,13 @@ function content(root: string): string {
 			`import ${beforeName} from "${path.join("@app", "data", task, beforeFile)}?url";`,
 			`import ${afterName} from "${path.join("@app", "data", task, afterFile)}?url";`,
 		);
-		lines.push("{", `before: ${beforeName},`, `after: ${afterName},`, "},");
+		lines.push(
+			"{",
+			`before: ${beforeName},`,
+			`after: ${afterName},`,
+			`parser: "${inferParser(beforeFile)}"`,
+			"},",
+		);
 	}
 	lines.push(
 		"]",
@@ -36,9 +45,22 @@ function content(root: string): string {
 		"type Task = {",
 		"before: string;",
 		"after: string;",
+		"parser: string;",
 		"};",
 	);
 	return [...importLines, "", ...lines].join("\n");
+}
+
+function inferParser(name: string): string {
+	const extension = name
+		.replace(/\.txt$/, "")
+		.split(".")
+		.at(-1);
+	return match(extension ?? "ts", {
+		ts: "typescript",
+		css: "css",
+		[otherwise]: "typescript",
+	});
 }
 
 class IdentifierFactory {
