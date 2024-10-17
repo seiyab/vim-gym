@@ -10,9 +10,7 @@ export function Game() {
 	return (
 		<Workspace
 			key={taskIndex}
-			beforeURL={task.before}
-			afterURL={task.after}
-			parser={task.parser}
+			task={task}
 			onDone={() => {
 				setTimeout(() => {
 					setTaskIndex((p) => (p + 1) % tasks.length);

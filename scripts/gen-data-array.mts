@@ -35,32 +35,37 @@ function content(root: string): string {
 			"{",
 			`before: ${beforeName},`,
 			`after: ${afterName},`,
-			`parser: "${inferParser(beforeFile)}"`,
+			`parser: "${inferParser(beforeFile)}",`,
+			`extension: "${extension(beforeFile)}",`,
 			"},",
 		);
 	}
 	lines.push(
 		"]",
 		"",
-		"type Task = {",
+		"export type Task = {",
 		"before: string;",
 		"after: string;",
 		"parser: string;",
+		"extension: string;",
 		"};",
 	);
 	return [...importLines, "", ...lines].join("\n");
 }
 
 function inferParser(name: string): string {
-	const extension = name
-		.replace(/\.txt$/, "")
-		.split(".")
-		.at(-1);
-	return match(extension ?? "ts", {
+	return match(extension(name) ?? "ts", {
 		ts: "typescript",
 		css: "css",
 		[otherwise]: "typescript",
 	});
+}
+
+function extension(name: string): string | undefined {
+	return name
+		.replace(/\.txt$/, "")
+		.split(".")
+		.at(-1);
 }
 
 class IdentifierFactory {

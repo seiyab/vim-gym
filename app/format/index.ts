@@ -1,15 +1,24 @@
 import * as prettier from "prettier-runtime";
 import * as prettierPluginESTree from "prettier-runtime/plugins/estree.js";
+import * as prettierPluginPostCSS from "prettier-runtime/plugins/postcss.js";
 import * as prettierPluginTypeScript from "prettier-runtime/plugins/typescript.js";
 
 export async function formatCode(
 	code: string,
 	parser: string,
 ): Promise<string> {
-	return await prettier.format(code, {
-		parser,
-		plugins: [prettierPluginTypeScript, prettierPluginESTree],
-	});
+	try {
+		return await prettier.format(code, {
+			parser,
+			plugins: [
+				prettierPluginTypeScript,
+				prettierPluginESTree,
+				prettierPluginPostCSS,
+			],
+		});
+	} catch {
+		return code;
+	}
 }
 
 export async function formatCodeArrayBuffer(
