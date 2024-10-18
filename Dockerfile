@@ -19,10 +19,8 @@ RUN pnpm run build
 
 # --------------- app ---------------
 FROM httpd:2-bookworm
-RUN echo <<EOS >> /usr/local/apache2/conf/httpd.conf
-echo Header set Cross-Origin-Opener-Policy "same-origin"
-Header set Cross-Origin-Embedder-Policy "require-corp"
-EOS
+COPY ./httpd/httpd.conf /my-httpd.conf
+RUN cat /my-httpd.conf >> /usr/local/apache2/conf/httpd.conf
 COPY --from=build /app/dist /usr/local/apache2/htdocs
 COPY --from=deps \
     /app/node_modules/vim-wasm/vim.wasm \
